@@ -1,0 +1,223 @@
+{
+  "entities": {
+    "UserPublicProfile": {
+      "title": "UserPublicProfile",
+      "description": "Public social profile for a CONNECTLY member without PII.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "username": { "type": "string", "minLength": 3, "maxLength": 30, "pattern": "^[a-z0-9_]{3,30}$" },
+        "displayName": { "type": "string", "minLength": 2, "maxLength": 50 },
+        "bio": { "type": "string", "minLength": 0, "maxLength": 240 },
+        "photoURL": { "type": "string", "minLength": 0, "maxLength": 200000 },
+        "followersCount": { "type": "integer" },
+        "followingCount": { "type": "integer" },
+        "postsCount": { "type": "integer" },
+        "isOnline": { "type": "boolean" },
+        "lastSeenAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "username", "displayName", "bio", "photoURL", "followersCount", "followingCount", "postsCount", "isOnline", "lastSeenAt", "createdAt", "updatedAt"]
+    },
+    "UserPrivateInfo": {
+      "title": "UserPrivateInfo",
+      "description": "Isolated private PII record for a CONNECTLY user.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "email": { "type": "string", "format": "email", "minLength": 3, "maxLength": 254 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "createdAt", "updatedAt"]
+    },
+    "UsernameReservation": {
+      "title": "UsernameReservation",
+      "description": "Uniqueness reservation mapping a handle to its owner UID.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "createdAt"]
+    },
+    "FollowEdge": {
+      "title": "FollowEdge",
+      "description": "Directed follow relationship between two users.",
+      "type": "object",
+      "properties": {
+        "followerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "followingId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["followerId", "followingId", "createdAt"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "Social feed post with text, optional compressed image, and engagement counters.",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "authorName": { "type": "string", "minLength": 2, "maxLength": 50 },
+        "authorUsername": { "type": "string", "minLength": 3, "maxLength": 30, "pattern": "^[a-z0-9_]{3,30}$" },
+        "authorPhotoURL": { "type": "string", "minLength": 0, "maxLength": 200000 },
+        "content": { "type": "string", "minLength": 0, "maxLength": 1000 },
+        "imageURL": { "type": "string", "minLength": 0, "maxLength": 250000 },
+        "hashtags": { "type": "array" },
+        "likesCount": { "type": "integer" },
+        "commentsCount": { "type": "integer" },
+        "sharesCount": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "authorName", "authorUsername", "authorPhotoURL", "content", "hashtags", "likesCount", "commentsCount", "sharesCount", "createdAt", "updatedAt"]
+    },
+    "PostLike": {
+      "title": "PostLike",
+      "description": "Per-user like record on a post.",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "userId", "createdAt"]
+    },
+    "PostComment": {
+      "title": "PostComment",
+      "description": "Comment authored on a post.",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "authorId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "authorName": { "type": "string", "minLength": 2, "maxLength": 50 },
+        "authorUsername": { "type": "string", "minLength": 3, "maxLength": 30, "pattern": "^[a-z0-9_]{3,30}$" },
+        "authorPhotoURL": { "type": "string", "minLength": 0, "maxLength": 200000 },
+        "content": { "type": "string", "minLength": 1, "maxLength": 400 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "authorId", "authorName", "authorUsername", "authorPhotoURL", "content", "createdAt"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "Direct 1:1 messaging thread between two participants.",
+      "type": "object",
+      "properties": {
+        "participantIds": { "type": "array" },
+        "participantAId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "participantBId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "participantAName": { "type": "string", "minLength": 1, "maxLength": 50 },
+        "participantAUsername": { "type": "string", "minLength": 3, "maxLength": 30, "pattern": "^[a-z0-9_]{3,30}$" },
+        "participantAPhotoURL": { "type": "string", "minLength": 0, "maxLength": 200000 },
+        "participantBName": { "type": "string", "minLength": 1, "maxLength": 50 },
+        "participantBUsername": { "type": "string", "minLength": 3, "maxLength": 30, "pattern": "^[a-z0-9_]{3,30}$" },
+        "participantBPhotoURL": { "type": "string", "minLength": 0, "maxLength": 200000 },
+        "lastMessageText": { "type": "string", "minLength": 0, "maxLength": 300 },
+        "lastMessageSenderId": { "type": "string", "minLength": 0, "maxLength": 128 },
+        "lastMessageAt": { "type": "string", "format": "date-time" },
+        "unreadA": { "type": "integer" },
+        "unreadB": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "participantIds",
+        "participantAId",
+        "participantBId",
+        "participantAName",
+        "participantAUsername",
+        "participantAPhotoURL",
+        "participantBName",
+        "participantBUsername",
+        "participantBPhotoURL",
+        "lastMessageText",
+        "lastMessageSenderId",
+        "lastMessageAt",
+        "unreadA",
+        "unreadB",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "DirectMessage": {
+      "title": "DirectMessage",
+      "description": "Message inside a private conversation.",
+      "type": "object",
+      "properties": {
+        "conversationId": { "type": "string", "minLength": 1, "maxLength": 260, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "senderId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "text": { "type": "string", "minLength": 0, "maxLength": 1500 },
+        "imageURL": { "type": "string", "minLength": 0, "maxLength": 250000 },
+        "readBy": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["conversationId", "senderId", "text", "readBy", "createdAt"]
+    },
+    "NotificationItem": {
+      "title": "NotificationItem",
+      "description": "Activity notification delivered to a recipient user.",
+      "type": "object",
+      "properties": {
+        "recipientId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "actorId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "actorName": { "type": "string", "minLength": 1, "maxLength": 50 },
+        "actorUsername": { "type": "string", "minLength": 3, "maxLength": 30, "pattern": "^[a-z0-9_]{3,30}$" },
+        "actorPhotoURL": { "type": "string", "minLength": 0, "maxLength": 200000 },
+        "type": { "type": "string", "enum": ["like", "comment", "follow", "message"] },
+        "postId": { "type": "string", "minLength": 0, "maxLength": 128 },
+        "conversationId": { "type": "string", "minLength": 0, "maxLength": 260 },
+        "previewText": { "type": "string", "minLength": 0, "maxLength": 180 },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["recipientId", "actorId", "actorName", "actorUsername", "actorPhotoURL", "type", "previewText", "read", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserPublicProfile" },
+      "description": "Public user profiles (PII isolated in private subcollection)."
+    },
+    "/users/{userId}/private/info": {
+      "schema": { "$ref": "#/entities/UserPrivateInfo" },
+      "description": "Owner-only PII record storing user email."
+    },
+    "/users/{userId}/following/{targetId}": {
+      "schema": { "$ref": "#/entities/FollowEdge" },
+      "description": "Users followed by {userId}."
+    },
+    "/users/{userId}/followers/{followerId}": {
+      "schema": { "$ref": "#/entities/FollowEdge" },
+      "description": "Users following {userId}."
+    },
+    "/usernames/{username}": {
+      "schema": { "$ref": "#/entities/UsernameReservation" },
+      "description": "Unique handle reservation index."
+    },
+    "/posts/{postId}": {
+      "schema": { "$ref": "#/entities/Post" },
+      "description": "Public social posts."
+    },
+    "/posts/{postId}/likes/{userId}": {
+      "schema": { "$ref": "#/entities/PostLike" },
+      "description": "Individual like edges per post."
+    },
+    "/posts/{postId}/comments/{commentId}": {
+      "schema": { "$ref": "#/entities/PostComment" },
+      "description": "Comments on a specific post."
+    },
+    "/conversations/{conversationId}": {
+      "schema": { "$ref": "#/entities/Conversation" },
+      "description": "Private 1:1 conversations accessible only to participants."
+    },
+    "/conversations/{conversationId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/DirectMessage" },
+      "description": "Messages inside a private conversation."
+    },
+    "/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/NotificationItem" },
+      "description": "Recipient-scoped notifications."
+    }
+  }
+}

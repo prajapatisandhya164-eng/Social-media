@@ -1,0 +1,6 @@
+{
+  "name": "CONNECTLY",
+  "description": "Share. Connect. Discover. A modern real-time social networking and private messaging web application.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
